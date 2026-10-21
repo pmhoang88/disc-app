@@ -28,12 +28,18 @@
     --deep:0 24px 60px -12px oklch(0 0 0/.6);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
   body{
-    font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",
+      "Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
     background:var(--background);color:var(--foreground);
     min-height:100vh;display:flex;flex-direction:column;
+    overflow-wrap:break-word;
   }
+  svg,svg text{font-family:inherit}
   #warp{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
   .veil{ /* readability tint over the animated bg */
     position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -143,7 +149,7 @@
   .tdesc{font-size:12.5px;color:var(--muted-foreground);line-height:1.55}
   .tmeta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .tmeta .chip{padding:4px 10px;font-size:11px}
-  .tsrc{font-size:10px;color:var(--muted-foreground);opacity:.75;font-style:italic}
+  .tsrc{font-size:11px;color:var(--muted-foreground);opacity:.75;font-style:italic}
   .tprog{border-radius:99px;padding:4px 10px;font-size:11px;font-weight:700}
   .tprog.live{background:color-mix(in oklch,var(--primary) 15%,transparent);color:var(--primary)}
   .tprog.done{background:color-mix(in oklch,var(--S) 18%,transparent);color:var(--S)}
@@ -244,7 +250,7 @@
   .sec h4{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted-foreground);margin-bottom:10px;font-weight:700}
   .sec h4 svg{width:18px;height:18px;stroke:currentColor}
-  .sec p,.sec li{font-size:15px;line-height:1.75;color:oklch(.36 .03 58)}
+  .sec p,.sec li{font-size:15px;line-height:1.75;color:var(--ink)}
   .sec.warn{border-left-color:var(--I)} .sec.good{border-left-color:var(--S)}
   .sec.job{border-left-color:var(--C)} .sec.talk{border-left-color:var(--D)}
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
@@ -350,7 +356,7 @@
   .pb-msg[data-ok]{color:var(--S)} .pb-msg[data-err]{color:var(--D)}
 
   /* ---------- reactive prose (pattern: reactive-prose) ---------- */
-  .rp-line{font-size:16px;line-height:2.4;color:oklch(.36 .03 58)}
+  .rp-line{font-size:16px;line-height:2.4;color:var(--ink)}
   .rp-num{display:inline-flex;align-items:center;border:none;border-bottom:2px solid var(--primary);
     background:color-mix(in oklch,var(--primary) 9%,transparent);color:var(--foreground);
     font-weight:800;font-size:16px;text-align:center;width:3.4em;border-radius:8px 8px 0 0;
@@ -522,9 +528,9 @@
   .topback{display:flex;justify-content:flex-start;margin-bottom:10px}
   .lk-back{display:none;margin-left:6px}
   .lk-back.on{display:inline-flex}
-  .lk-det{padding:6px 10px 10px;font-size:12px;line-height:1.55;color:var(--ink)}
+  .lk-det{padding:6px 10px 10px;font-size:13.5px;line-height:1.65;color:var(--ink)}
   .lk-det .tl{margin:4px 0 0;padding-left:16px}
-  .lk-det .tl li{margin:3px 0;color:var(--muted-foreground);font-size:11.5px}
+  .lk-det .tl li{margin:5px 0;color:var(--muted-foreground);font-size:13px;line-height:1.6}
   .cmp-bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:11.5px}
   .cmp-bar .cb-n{width:110px;color:var(--muted-foreground)}
   .cmp-bar .cb-t{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,.08);position:relative}
@@ -2023,7 +2029,7 @@ function renderLinks(p){
   const gFam=mk("g",{});
   arcs.forEach(ar=>{const large=(ar.a1-ar.a0)>Math.PI?1:0;
     gFam.appendChild(mk("path",{d:`M ${Pt(438,ar.a0)} A 438 438 0 ${large} 1 ${Pt(438,ar.a1)}`,
-      fill:"none",stroke:TCOL[ar.tid]||"#999","stroke-width":18,opacity:.9,"stroke-linecap":"butt"}));});
+      fill:"none",stroke:TCOL[ar.tid]||"rgba(255,255,255,.55)","stroke-width":18,opacity:.9,"stroke-linecap":"butt"}));});
   svg.appendChild(gFam);
   // node arcs on ring RN + thin labels with halo
   const gN=mk("g",{});
@@ -2054,7 +2060,7 @@ function renderLinks(p){
   // test-name labels on family arcs (mid angle, small caps)
   arcs.forEach(ar=>{const mid=(ar.a0+ar.a1)/2,lr=438+26;
     const t=mk("text",{x:(lr*Math.cos(mid)).toFixed(1),y:(lr*Math.sin(mid)+4).toFixed(1),
-      "font-size":12,"font-weight":700,fill:TCOL[ar.tid]||"#999",
+      "font-size":12,"font-weight":700,fill:TCOL[ar.tid]||"rgba(255,255,255,.55)",
       "text-anchor":"middle","paint-order":"stroke",stroke:"rgba(22,13,8,.92)","stroke-width":4,"stroke-linejoin":"round"});
     t.textContent=testName(ar.tid).split("·")[0].trim().toUpperCase(); svg.appendChild(t);});
   box.appendChild(svg);
@@ -2209,10 +2215,12 @@ function renderLib(){
     const body=document.createElement("div"); body.className="acc";
     body.innerHTML=`<div><div class="lk-det">
       <ul class="tl">${b.ins.map(x=>`<li>${esc(L?x[0]:x[1])}</li>`).join("")}</ul>
-      <div style="margin-top:8px"><a class="btn ghost" style="display:inline-flex;text-decoration:none;font-size:12px"
+      <div style="margin-top:8px"><a class="btn" style="display:inline-flex;text-decoration:none;font-size:12px;padding:8px 16px"
+         href="${b.fmt==="epub"?"library/bk_"+b.id+".html":"library/"+b.file}" target="_blank" rel="noopener">
+         ${L?"📖 Đọc trong app":"📖 Read in-app"}</a>
+        <a class="btn ghost" style="display:inline-flex;text-decoration:none;font-size:11px;margin-left:6px;padding:8px 12px"
          href="library/${encodeURIComponent(b.file)}" target="_blank" rel="noopener">
-         ${L?"📂 Mở file gốc":"📂 Open file"} · ${b.fmt.toUpperCase()}</a>
-      ${b.fmt==="epub"?`<span class="lk-src"> ${L?"· epub mở bằng Books/Kindle/app đọc sách":"· open epub in Books/Kindle"}</span>`:""}</div>
+         📂 ${b.fmt.toUpperCase()} gốc</a></div>
     </div></div>`;
     card.appendChild(h); card.appendChild(body); g.appendChild(card);
   });
