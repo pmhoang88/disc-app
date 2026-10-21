@@ -522,6 +522,9 @@
   .acc>div{overflow:hidden;min-height:0}
   .acc.open{grid-template-rows:1fr}
   .acc-h{cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .acc-h .libv{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+  .acc-h .libv .tname{line-height:1.4}
+  .acc-h .libv .tmeta{margin-top:2px}
   .acc-h .car{transition:transform .3s;font-size:11px;color:var(--muted-foreground);flex:none}
   .acc-h.open .car{transform:rotate(90deg)}
   .acc-h:hover .car{color:var(--primary)}
@@ -2211,14 +2214,14 @@ function renderLib(){
     const card=document.createElement("div"); card.className="tcard";
     const chips=(b.rel||[]).map(([t,d])=>`<span class="chip" style="border-color:${TCOL[t]||'#888'}">${esc(d)}</span>`).join("");
     const cov=b.cover?`<img src="library/${b.cover}" loading="lazy" onerror="this.remove()"
-      style="width:34px;height:50px;object-fit:cover;border-radius:5px;flex-shrink:0;
+      style="width:40px;height:58px;object-fit:cover;border-radius:5px;flex-shrink:0;
       border:1px solid var(--border);margin-right:2px">`:`<span class="ticon">${b.fmt==="pdf"?"📕":"📖"}</span>`;
     const lg=b.lang?`<span class="chip">${esc(String(b.lang).split("-")[0].toUpperCase())}</span>`:"";
     const h=document.createElement("div"); h.className="acc-h"; h.setAttribute("onclick","accTgl(this)");
     h.innerHTML=`${cov}
-      <span class="tname">${esc(L?b.tvi:b.ten)}</span>
+      <span class="libv"><span class="tname">${esc(L?b.tvi:b.ten)}</span>
       <span class="tdesc">${esc(b.author)} · ${esc(b.cat||"")}</span>
-      <span class="tmeta"><span class="chip">${b.fmt.toUpperCase()}</span>${lg}${chips}</span><span class="car">▶</span>`;
+      <span class="tmeta"><span class="chip">${b.fmt.toUpperCase()}</span>${lg}${chips}</span></span><span class="car">▶</span>`;
     const body=document.createElement("div"); body.className="acc";
     body.innerHTML=`<div><div class="lk-det">
       <ul class="tl">${b.ins.map(x=>`<li>${esc(L?x[0]:x[1])}</li>`).join("")}</ul>
